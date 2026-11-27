@@ -52,7 +52,11 @@ export default function Till() {
     const exact = (stock ?? []).find((m) => m.barcode && m.barcode === term.trim())
     if (exact) return addMed(exact)
     if (hits.length === 1) return addMed(hits[0]!)
+    const t = term.trim().toLowerCase()
+    const starts = hits.filter((m) => m.name.toLowerCase().startsWith(t) || m.brand?.toLowerCase().startsWith(t))
+    if (starts.length === 1) return addMed(starts[0]!)
     if (hits.length === 0 && term.trim()) toast(`No medicine with “${term.trim()}”`, { tone: 'error' })
+    else if (hits.length > 1) toast('More than one match. Tap the right one in the list.')
   }
 
   const subtotal = cart.lines.reduce((s, l) => s + l.price * l.quantity, 0)

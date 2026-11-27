@@ -51,7 +51,7 @@ export function Home() {
 
   const hour = Number(new Intl.DateTimeFormat('en-GB', { hour: 'numeric', hourCycle: 'h23', timeZone: pharmacy?.timezone }).format(new Date()))
   const hello = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
-  const first = staff?.full_name?.split(/\s+/)[0] ?? ''
+  const first = (staff?.full_name ?? '').split(/\s+/).find((w) => w && !/^(pharm|dr|mr|mrs|ms|miss|prof|pst|chief)\.?$/i.test(w)) ?? ''
   const todayTotal = (sales ?? []).reduce((s, x) => s + Number(x.total), 0)
 
   const items = [
